@@ -1,0 +1,14 @@
+name: "."
+title: "Truthful Fake News"
+description: |
+  Truthful Fake News
+output_dir: "docs"
+navbar:
+  left:
+    - text: "Main"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - text: "Indepth Analysis"
+      href: indepth.html
+output: distill::distill_article

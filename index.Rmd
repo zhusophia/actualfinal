@@ -1,0 +1,64 @@
+---
+title: "idk"
+description: |
+  If you clicked on this link, guess my project was a success!
+site: distill::distill_website
+---
+## Introduction
+Alas, what have you stumbled into? 
+
+# Goals 
+1. What makes a fake news title good? 
+2. How can I make the optimal fake news title 
+
+### Details 
+How can I analyze fake news titles? 
+Just because I think that the wording of a headline is cruical, is that actually true? 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(tidyr)
+library(dplyr)
+library(rmarkdown)
+```
+
+## Breaking down the Data
+# Investigation 1 - The Almighty Words of Fake News Headlines
+
+### [Data](https://github.com/BuzzFeedNews/2018-12-fake-news-top-50)
+Here is a short sample of data if you want to scroll through, sorted by the amount of Facebook likes they garnered. 
+
+```{r, table}
+titledata <- read.csv("newstitle1.csv")
+paged_table(titledata)
+```
+
+### First Investigation: Most popular words
+ 
+<div>
+After going through ~7900 headlines, these are the most popular words! It's extremely fascinating, I know. 
+</div>
+
+```{r, first graph}
+titledata %>%
+  select(title, category) %>%
+  slice(1:7900) %>% 
+  mutate(title = strsplit(as.character(title), " ")) %>% 
+  unnest(title) %>% 
+  group_by(title) %>% 
+  summarize(total = n()) %>% 
+  arrange(desc(total)) %>% 
+  slice(1:10) %>% 
+
+ggplot(mapping = aes(x = reorder(title, total), y = total))+
+  geom_col(fill = "darkseagreen3")+
+  theme_classic()+
+  coord_flip()+
+labs(title = "Most Common Words in Fake News Headlines", 
+     subtitle = "Wow! What a diverse range of words, could totally make a headline out of it!", y = "Amount of Times it has Appeared in a Headline", x = "Word", caption = "Source: BuzzFeed News")
+```
+
+Hmm... Something about this graph doesn't seem right. Let's clean this data up by removing duplicates, punctuation, and prepositions! That'd give us a better idea of what people enjoy to read about, and allow us to find the best subject to center our article around! 
+
+
