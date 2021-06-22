@@ -1,17 +1,8 @@
----
-title: "testdata"
-output: html_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(tidyr)
 library(dplyr)
 library(rmarkdown)
-```
 
-```{r}
 titledata <- read.csv("newstitle1.csv")
 removedata <- titledata %>%
   select(title, category) %>%
@@ -28,8 +19,5 @@ ggplot(newdata, mapping = aes(x = reorder(title, total), y = total))+
   geom_col(fill = "darkseagreen3")+
   theme_classic()+
   coord_flip()+
-labs(title = "Most Common Words in Fake News Headlines (Edited)", 
-     subtitle = "Painfully obvious what year this is from", y = "Amount of Times it has Appeared in a Headline", x = "Word", caption = "Source: BuzzFeed News")
-
-```
-
+  labs(title = "Most Common Words in Fake News Headlines (Edited)", 
+       subtitle = "Painfully obvious what year this is from", y = "Amount of Times it has Appeared in a Headline", x = "Word", caption = "Source: BuzzFeed News")
