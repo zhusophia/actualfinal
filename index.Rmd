@@ -2,18 +2,22 @@
 title: "idk"
 description: |
   If you clicked on this link, guess my project was a success!
+author: Sophia Zhu
 site: distill::distill_website
 ---
 ## Introduction
 Alas, what have you stumbled into? 
 
 # Goals 
-1. What makes a fake news title good? 
-2. How can I make the optimal fake news title 
+Discover how to make the optimal fake news title, or basically, what makes a fake news article good?
+
+Checklist:
+1. What words do they use? What topics do they talk about? 
+2. What about the length of the sentence? 
 
 ### Details 
 How can I analyze fake news titles? 
-Just because I think that the wording of a headline is cruical, is that actually true? 
+Just because I think that the wording of a headline is crucial, is that actually true? 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -61,4 +65,24 @@ labs(title = "Most Common Words in Fake News Headlines",
 
 Hmm... Something about this graph doesn't seem right. Let's clean this data up by removing duplicates, punctuation, and prepositions! That'd give us a better idea of what people enjoy to read about, and allow us to find the best subject to center our article around! 
 
+```{r}
+titledata <- read.csv("newstitle1.csv")
+removedata <- titledata %>%
+  select(title, category) %>%
+  slice(1:7900) %>% 
+  mutate(title = strsplit(as.character(title), " ")) %>% 
+  unnest(title) %>% 
+  group_by(title) %>% 
+  summarize(total = n()) %>% 
+  arrange(desc(total)) %>% 
+  slice(1:50)
 
+newdata <- removedata[c(4, 15, 16, 17, 21, 25, 28, 29, 30, 37),]
+ggplot(newdata, mapping = aes(x = reorder(title, total), y = total))+
+  geom_col(fill = "darkseagreen3")+
+  theme_classic()+
+  coord_flip()+
+labs(title = "Most Common Words in Fake News Headlines (Edited)", 
+     subtitle = "Painfully obvious what year this is from", y = "Amount of Times it has Appeared in a Headline", x = "Word", caption = "Source: BuzzFeed News")
+```
+ 
